@@ -33,7 +33,7 @@ def load_dataset_for_train(spectrograms_path):
     for root, _, file_names in os.walk(spectrograms_path):
         for file_name in file_names:
             file_path = os.path.join(root, file_name)
-            if os.path.split(root)[1] == 'miss':
+            if os.path.split(root)[1] == 'mistakes':
                 label.append(-1)
             elif os.path.split(root)[1] == 'normal':
                 label.append(1)
@@ -70,7 +70,7 @@ def load_dataset_for_pretrain(spectrograms_path):
     for root, _, file_names in os.walk(spectrograms_path):
         for file_name in file_names:
             file_path = os.path.join(root, file_name)
-            if os.path.split(root)[1] == 'miss':
+            if os.path.split(root)[1] == 'mistakes':
                 continue
             else:
                 spectrogram = np.load(file_path)  # (n_bins, n_frames, 1)
@@ -117,7 +117,7 @@ def load_dataset_for_test(spectrograms_path):
             elif os.path.split(root)[1] == 'tmp':
                 label.append(6)  
             else:
-                print("The name of the directory must be set to 'Miss' or 'Normal'.")
+                print("The name of the directory must be set to 'Mistakes' or 'Normal'.")
                 sys.exit()
 
             spectrogram = np.load(file_path)

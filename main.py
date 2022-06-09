@@ -4,8 +4,8 @@ import torch
 import sys
 
 from preprocess import get_mydata
-from train_DeepSAD import TrainerDeepSAD
-from test_DeepSVDD import TesterDeepSVDD
+from train import TrainerDeepSAD
+from test import TesterDeepSVDD
 
 
 if __name__ == '__main__':
