@@ -8,7 +8,7 @@ from barbar import Bar
 from sklearn import metrics
 
 from utils.utils import weights_init_normal
-from model import autoencoder, network
+from model import Encoder, Autoencoder
 from early_stopping import EarlyStopping
 
 class TrainerDeepSAD:
@@ -19,8 +19,8 @@ class TrainerDeepSAD:
         self.device = device
         self.pretrain_loader = pretrain_data
         self.pretrain_val_loader = pretrain_val_data
-        self.autoencoder = autoencoder
-        self.network = network
+        self.autoencoder = Autoencoder
+        self.network = Encoder
 
     def pretrain_validation(self, ae):
         ae.eval()

@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import csv
 
-from model import network
+from model import Encoder
 from preprocess import get_mydata
 
 
@@ -19,7 +19,7 @@ class TesterDeepSVDD:
         #self.args = args
         #self.train_loader = data
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.net = network(latent_dim).to(self.device)
+        self.net = Encoder(latent_dim).to(self.device)
         state_dict = torch.load(parameters_path, map_location=torch.device('cpu'))
         self.net.load_state_dict(state_dict['net_dict'])
         self.c = torch.Tensor(state_dict['center']).to(self.device)
