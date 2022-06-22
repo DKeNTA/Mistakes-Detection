@@ -101,9 +101,6 @@ class TrainerDeepSAD:
             early_stopping(val_loss, ae, log)
 
             if early_stopping.early_stop: 
-                state_dict = torch.load(self.args.ae_save_path)
-                ae.load_state_dict(state_dict['net_dict'])
-                self.save_weights_for_DeepSAD(ae, self.pretrain_loader, log)
                 break
             
             """
@@ -117,15 +114,17 @@ class TrainerDeepSAD:
                 print('Saved Progress.')
             """
         
+        state_dict = torch.load(self.args.ae_save_path)
+        ae.load_state_dict(state_dict['net_dict'])
         self.save_weights_for_DeepSAD(ae, self.pretrain_loader, log)
 
 
     def save_weights_for_DeepSAD(self, model, dataloader, log):
         """Initialize Deep SAD weights using the encoder weights of the pretrained autoencoder."""
-        c = self.set_c(model, dataloader)
         net = self.network(self.args.latent_dim).to(self.device)
         state_dict = model.state_dict()
         net.load_state_dict(state_dict, strict=False)
+        c = self.set_c(net, dataloader)
         torch.save({'center': c.cpu().data.numpy().tolist(),
                     'net_dict': net.state_dict(),
                     'log': log}, self.args.ae_save_path)
@@ -139,7 +138,7 @@ class TrainerDeepSAD:
         with torch.no_grad():
             for x in Bar(dataloader):
                 x = x.float().to(self.device)
-                z = model.encode(x)
+                z = model(x)
                 z_.append(z.detach())
         z_ = torch.cat(z_)
         c = torch.mean(z_, dim=0)
